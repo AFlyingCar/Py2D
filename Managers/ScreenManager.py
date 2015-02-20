@@ -1,35 +1,25 @@
 import pygame
 
-import config
-
-settings = config.configReader()[0]
+from .. import Config
 
 class ScreenManager(object):
 	_instance = None
-	# def __init__(self,xsize,ysize,xscreensize,yscreensize,campos=[0,0],fps=60):
-	# 	self.screen = pygame.display.set_mode((xscreensize,yscreensize))
-	# 	self.cameraPosition = campos
-	# 	self.fullSurface = pygame.Surface((xsize,ysize))
-	# 	self.screensize = [xscreensize,yscreensize] #Size of the viewed surface (what can be seen)
-	# 	self.cameraview = pygame.Surface(self.screensize)
-	# 	self.fullSurfaceSize = [xsize,ysize] #Size of the entire surface
-	# 	self.background = pygame.Surface(self.screensize)
-	# 	self.fps = fps
-	# 	self.queue = {}
-	# 	self.clock = pygame.time.Clock()
-
 	def __init__(self):
 		self.Init()
 
 	def Init(self):
-		self.screen = pygame.display.set_mode((640,480))
-		self.cameraPosition = [0,0]
-		self.fullSurface = pygame.Surface((1000,1000))
-		self.screensize = [640,480]
-		self.cameraview = pygame.Surface(self.screensize)
-		self.fullSurfaceSize = [1000,1000]
-		self.background = pygame.Surface(self.screensize)
-		self.fps = 60
+		settings = Config.Config(".\\bin\\Py2D\\Settings\\Window.cfg")
+
+		self.screensize = 			settings.getOption("ScreenSize")
+		self.cameraPosition = 		settings.getOption("CameraPosition")
+		self.fullSurfaceSize = 		settings.getOption("FullSurfaceSize")
+		self.fps = 					settings.getOption("MaximumFrameRate")
+
+		self.screen = 		pygame.display.set_mode(self.screensize)
+		self.cameraview = 	pygame.Surface(self.screensize)
+		self.background = 	pygame.Surface(self.screensize)
+		self.fullSurface = 	pygame.Surface(self.fullSurfaceSize)
+
 		self.queue = {}
 		self.clock = pygame.time.Clock()
 
@@ -90,14 +80,33 @@ class ScreenManager(object):
 	def getFullSurfaceSize(self):
 		return self.fullSurfaceSize
 
+	def getScreenCenter(self):
+		x = self.screensize[0]/2
+		y = self.screensize[1]/2
+
+		return [x,y]
+
+	def getFullSurfaceCener(self):
+		x = self.fullSurfaceSize[0]/2
+		y = self.fullSurfaceSize[1]/2
+
+		return [x,y]
+
 	def getFPS(self):
 		return self.fps
 
 	def setFPS(self, fps):
 		self.fps = fps
 
-def getInstance():
-	if ScreenManager._instance == None:
+	@classmethod
+	def getInstance(cls):
+		if cls._instance == None:
+			cls._instance = ScreenManager()
+
+		return cls._instance
+
+# def getInstance():
+# 	if ScreenManager._instance == None:
 		# ScreenManager._instance = ScreenManager(settings["FullSurfaceSizeX"],
 		# 						  settings["FullSurfaceSizeY"],
 		# 						  settings["ScreenSizeX"],
@@ -106,8 +115,8 @@ def getInstance():
 		# 						   settings["CameraPositionY"]
 		# 						  ],
 		# 						  settings["MaximumFrameRate"])
-		ScreenManager._instance = ScreenManager()
-	return ScreenManager._instance
+	# 	ScreenManager._instance = ScreenManager()
+	# return ScreenManager._instance
 
 def subsurface(surf,topleft,botright):
 	'''Get a subsurface of surf.
