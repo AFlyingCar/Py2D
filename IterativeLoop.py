@@ -8,8 +8,8 @@ from bin.Py2D.Managers import ScreenManager,InputManager
 class IterativeLoop(object):
 	def __init__(self,name="Default Name"):
 		self.name = name
-		# self.smanager = ScreenManager.ScreenManager.getInstance()
-		self.smanager = ScreenManager.getInstance()
+		self.smanager = ScreenManager.ScreenManager.getInstance()
+		# self.smanager = ScreenManager.getInstance()
 		# self.smanager.setCameraPosition(500-320,500-240)
 		# self.smanager = ScreenManager.ScreenManager(1000,1000,640,480,campos=[500-320,500-240])
 
