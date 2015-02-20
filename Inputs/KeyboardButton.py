@@ -1,9 +1,11 @@
-import Keyboard
+import pygame
 
 class KeyboardButton(object):
-	def __init__(self,keyboard,button):
-		self.keyboard = keyboard
+	def __init__(self,button):
 		self.button = button
 
 	def Get(self):
-		return self.keyboard.GetHeld(self.button)
+		return pygame.key.get_pressed()[self.button]
+
+	def GetButton(self):
+		return self.button
