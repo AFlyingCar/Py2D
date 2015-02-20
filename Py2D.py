@@ -38,6 +38,7 @@ import Errors
 import Inputs
 
 import IterativeLoop
+import Config
 
 # print dir(Sprites)
 # print dir(Managers)
