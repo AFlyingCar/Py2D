@@ -105,19 +105,6 @@ class ScreenManager(object):
 
 		return cls._instance
 
-# def getInstance():
-# 	if ScreenManager._instance == None:
-		# ScreenManager._instance = ScreenManager(settings["FullSurfaceSizeX"],
-		# 						  settings["FullSurfaceSizeY"],
-		# 						  settings["ScreenSizeX"],
-		# 						  settings["ScreenSizeY"],
-		# 						  [settings["CameraPositionX"],
-		# 						   settings["CameraPositionY"]
-		# 						  ],
-		# 						  settings["MaximumFrameRate"])
-	# 	ScreenManager._instance = ScreenManager()
-	# return ScreenManager._instance
-
 def subsurface(surf,topleft,botright):
 	'''Get a subsurface of surf.
 	surf = 		pygame.Surface
