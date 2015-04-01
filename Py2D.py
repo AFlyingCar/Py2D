@@ -38,9 +38,5 @@ import Errors
 import Inputs
 
 import IterativeLoop
+import Sound
 import Config
-
-# print dir(Sprites)
-# print dir(Managers)
-# print dir(Errors)
-# print dir(Inputs)
