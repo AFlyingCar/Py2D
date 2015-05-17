@@ -20,18 +20,40 @@ class ScreenManager(object):
 		self.background = 	pygame.Surface(self.screensize)
 		self.fullSurface = 	pygame.Surface(self.fullSurfaceSize)
 
-		self.queue = {}
+		# self.queue = {}
+		self.queue = []
 		self.clock = pygame.time.Clock()
 
-	def addToQueue(self,surf,pos):
-		self.queue[surf] = pos
+	def addToQueue(self,item):
+		'''item can be either a list or an object, so long as the object has a one parameter render method.
+		Possibilities: 
+		item = [pygame.Surface,(x,y)]
+		or
+		item = 
+		class ClassName:
+			def render(self,foo):
+				pass
+		'''
+		# self.queue[surf] = pos
+		self.queue.append(item)
 		return True
+
+	# def renderQueue(self):
+	# 	for surf,pos in self.queue:
+	# 		self.renderToScreen(surf,pos)
+
+	# 	return True
 
 	def renderQueue(self):
-		for surf,pos in self.queue:
-			self.renderToScreen(surf,pos)
-
-		return True
+		try:
+			for s in self.queue:
+				if type(s) == list:
+					self.fullSurface.blit(s[0],s[1])
+				else:
+					s.render(self.fullSurface);
+			return True
+		except Exception:
+			return False
 
 	def getQueue(self):
 		return self.queue
