@@ -10,6 +10,7 @@ class SpriteSheetAnim(Anim.Anim):
 		self.spriteSize = spriteSize
 		self.spriteStartPos = spriteStartPos
 		self.setFrames(self.loadSpriteSheet(filename))
+		self.resetScale()
 
 	def getFilename(self):
 		return self.filename
