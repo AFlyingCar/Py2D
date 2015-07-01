@@ -12,6 +12,7 @@ class Anim(object):
 			self.size = (0,0)
 
 		self.angle = 0.0
+		self.timesToPlay=0
 
 	def isPlaying(self):
 		return self.playing
@@ -70,3 +71,7 @@ class Anim(object):
 		self.angle = angle
 	def resetRotation(self):
 		self.angle = 0.0
+	def setTimesToPlay(self,t):
+		self.timesToPlay=t
+	def getTimesToPlay(self):
+		return self.timesToPlay
