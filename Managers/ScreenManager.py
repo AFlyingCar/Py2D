@@ -59,11 +59,11 @@ class ScreenManager(object):
 		return self.queue
 
 	def updatePeriodic(self):
-		self.renderToScreen(self.fullSurface,(0-self.cameraPosition[0],0-self.cameraPosition[1]))
+		self.resetFullSurface()
 		self.renderQueue()
+		self.renderToScreen(self.fullSurface,(0-self.cameraPosition[0],0-self.cameraPosition[1]))
 		self.clock.tick(self.fps)
 		pygame.display.update()
-		self.resetFullSurface()
 
 	def resetFullSurface(self):
 		self.fullSurface = pygame.Surface(self.fullSurfaceSize)
