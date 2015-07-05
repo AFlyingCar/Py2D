@@ -1,27 +1,34 @@
 import pygame
 from pygame.locals import *
 
-NULLEVENT = 0
+NULLEVENT = pygame.event.Event(0,{})
 
 class Keyboard(object):
 	def __init__(self):
-		self.held = []
-
-	def GetRawKey(self,key):
-		for event in pygame.event.get():
-			if event.type == KEYDOWN or event.type == KEYUP:
-				if event.key == key:
-					return event
-
-		return pygame.event.Event(NULLEVENT,{})
+		self.held = pygame.key.get_pressed()
+		self.timesChecked=[0]*len(self.held)
+	def Execute(self):
+		self.held=pygame.key.get_pressed()
+		for i in range(len(self.held)):
+			if self.held[i]:
+				if self.timesChecked[i]>=1:
+					self.timesChecked[i]+=1
+			else: self.timesChecked[i] = 0
 
 	def GetHeld(self,key):
-		event = self.GetRawKey(key)
-		if event.type == KEYDOWN:
-			self.held.append(key)
-			return True
-		elif event.type == KEYUP:
-			self.held.remove(key)
+		return self.held[key]
+
+	def getKeyOnce(self,key):
+		if self.timesChecked[key] == 0:
+			if self.held[key]:
+				self.timesChecked[key]+=1
+			return self.held[key]
+		else:
 			return False
 
-		return key in self.held
+	def getKeyNTimes(self,key,n):
+		if self.timesChecked[key] < n:
+			return self.held[key]
+		else:
+			return False
+
