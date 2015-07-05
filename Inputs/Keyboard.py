@@ -32,3 +32,9 @@ class Keyboard(object):
 		else:
 			return False
 
+	def getKeyCombination(self,combo):
+		for i in combo:
+			if not self.GetHeld(i):
+				return False
+		return True
+
