@@ -8,7 +8,7 @@ class ScreenManager(object):
 		self.Init()
 
 	def Init(self):
-		settings = Config.Config(".\\bin\\Py2D\\Settings\\Window.cfg")
+		settings = Config.Config("./bin/Py2D/Settings/Window.cfg")
 
 		self.screensize = 			settings.getOption("ScreenSize")
 		self.cameraPosition = 		settings.getOption("CameraPosition")
@@ -31,12 +31,16 @@ class ScreenManager(object):
 		or
 		item = 
 		class ClassName:
-			def render(self,foo):
+			def render(self,surf):
 				pass
 		'''
 		# self.queue[surf] = pos
 		self.queue.append(item)
 		return True
+	def removeFromQueue(self,index):
+		'''Index <- Integer. 0 < index < len(queue)
+		Remove an element from the queue and return it.'''
+		return self.queue.pop(index)
 
 	# def renderQueue(self):
 	# 	for surf,pos in self.queue:
@@ -52,7 +56,7 @@ class ScreenManager(object):
 				else:
 					s.render(self.fullSurface);
 			return True
-		except Exception:
+		except Exception as e:
 			return False
 
 	def getQueue(self):
