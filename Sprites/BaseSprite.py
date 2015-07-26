@@ -10,6 +10,7 @@ class BaseSprite(pygame.sprite.Sprite):
 		self.position = [x,y,z]
 		self.rect = pygame.Rect(1,1,1,1)
 		self.surf = pygame.Surface((1,1))
+		self.do_render = True
 
 	def setSurf(self,newSurf=None,x=0,y=0):
 		if newSurf:
@@ -81,5 +82,16 @@ class BaseSprite(pygame.sprite.Sprite):
 		return self.health <= self.death_lvl
 
 	def updatePosition(self):
-		s = ScreenManager.getInstance()
-		s.renderToMainSurface(self.surf,(self.position[0],self.position[1]))
+		if self.do_render:
+			s = ScreenManager.getInstance()
+			s.renderToMainSurface(self.surf,(self.position[0],self.position[1]))
+
+	def render(self,surf):
+		if self.do_render:
+			surf.blit(self.surf,(self.position[:-1]))
+	def isDoRender(self):
+		return self.do_render
+
+	def setDoRender(self,value):
+		self.do_render=value
+
