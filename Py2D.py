@@ -11,6 +11,8 @@ def START_WITH_ERROR_HANDLING(mclass):
 	except BaseException as e:
 		if not type(e) != SystemExit:
 			main_obj.Interrupted(e)
+		else:
+			print "System Exit called!"
 
 def START_WITHOUT_ERROR_HANDLING(mclass):
 	main_obj = mclass()
