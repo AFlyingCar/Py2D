@@ -1,6 +1,10 @@
-import pygame
+import pygame,threading
 
 from .. import Config
+
+def repeatUpdatePeriodic(self):
+	while True:
+		self.updatePeriodic()
 
 class ScreenManager(object):
 	_instance = None
@@ -23,6 +27,10 @@ class ScreenManager(object):
 		# self.queue = {}
 		self.queue = []
 		self.clock = pygame.time.Clock()
+		
+		self.tupdatePeriodic = threading.Thread(target=repeatUpdatePeriodic,args=(self,))
+		self.tupdatePeriodic.daemon = True
+		self.tupdatePeriodic.start()
 
 	def addToQueue(self,item):
 		'''item can be either a list or an object, so long as the object has a one parameter render method.
