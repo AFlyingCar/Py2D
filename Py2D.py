@@ -7,7 +7,8 @@ def START_WITH_ERROR_HANDLING(mclass):
 			if main_obj.IsFinished():
 				main_obj.End()
 				return 0
-			main_obj.getScreen().updatePeriodic()
+			# main_obj.getScreen().updatePeriodic()
+			pygame.event.pump()
 	except BaseException as e:
 		if not type(e) != SystemExit:
 			main_obj.Interrupted(e)
@@ -22,7 +23,7 @@ def START_WITHOUT_ERROR_HANDLING(mclass):
 		if main_obj.IsFinished():
 			main_obj.End()
 			return 0
-		main_obj.getScreen().updatePeriodic()
+		# main_obj.getScreen().updatePeriodic()
 		pygame.event.pump()
 
 def main(mclass, debug_level=1):
