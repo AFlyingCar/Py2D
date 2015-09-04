@@ -1,8 +1,9 @@
 import pygame,threading
 
+from .. import KillableThread
 from .. import Config
 
-def repeatUpdatePeriodic(self):
+def _repeatUpdatePeriodic(self):
 	while True:
 		self.updatePeriodic()
 
@@ -12,6 +13,7 @@ class ScreenManager(object):
 		self.Init()
 
 	def Init(self):
+		pygame.display.init()
 		settings = Config.Config("./bin/Py2D/Settings/Window.cfg")
 
 		self.screensize = 			settings.getOption("ScreenSize")
@@ -27,9 +29,16 @@ class ScreenManager(object):
 		# self.queue = {}
 		self.queue = []
 		self.clock = pygame.time.Clock()
-		
-		self.tupdatePeriodic = threading.Thread(target=repeatUpdatePeriodic,args=(self,))
+
+		self.tupdatePeriodic = KillableThread.KillableThread(target=_repeatUpdatePeriodic,args=(self,))
 		self.tupdatePeriodic.daemon = True
+		# self.tupdatePeriodic.start()
+
+	def End(self):
+		self.tupdatePeriodic.kill()
+		pygame.display.quit()
+
+	def startUpdatePeriodic(self):
 		self.tupdatePeriodic.start()
 
 	def addToQueue(self,item):
