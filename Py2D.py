@@ -18,9 +18,11 @@ def START_WITH_ERROR_HANDLING(mclass):
 def START_WITHOUT_ERROR_HANDLING(mclass):
 	main_obj = mclass()
 	main_obj.Init()
+	main_obj.getScreen().startUpdatePeriodic()
 	while True:
 		main_obj.Execute()
 		if main_obj.IsFinished():
+			main_obj.getScreen().End()
 			main_obj.End()
 			return 0
 		# main_obj.getScreen().updatePeriodic()
