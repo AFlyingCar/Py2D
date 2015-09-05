@@ -71,6 +71,10 @@ class Anim(object):
 		self.angle = angle
 	def resetRotation(self):
 		self.angle = 0.0
+	def getSize(self):
+		return self.size
+	def getAngle(self):
+		return self.angle
 	def setTimesToPlay(self,t):
 		self.timesToPlay=t
 	def getTimesToPlay(self):
