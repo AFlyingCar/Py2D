@@ -1,8 +1,5 @@
 import pygame
 
-import sys
-print sys.path
-
 from Py2D.Managers import ScreenManager
 
 class BaseSprite(pygame.sprite.Sprite):
