@@ -1,16 +1,32 @@
 import os
 
 class Config():
-	def __init__(self,filename):
-		if not os.path.exists(filename):
-			raise OSError("[ERROR] - File not found %s"%filename)
-
+	def __init__(self,filename=""):
 		self.filename = filename
-		self.raw_data = self.readFile()
-		
-		returns = self.parseData()
-		self.options = returns[0]
-		self.errors = returns[1]
+		self.raw_data = ""
+		self.options = {}
+		self.errors = 0
+		self.hasRead = False
+
+		if filename != "":
+			if not os.path.exists(filename):
+				raise OSError("File not found %s"%filename)
+
+			self.filename = filename
+			self.read()
+
+	def read(self):
+		if not self.hasRead:
+			if not os.path.exists(self.filename):
+				raise OSError("File not found %s"%self.filename)
+			self.raw_data = self.readFile()
+			
+			returns = self.parseData()
+			self.options = returns[0]
+			self.errors = returns[1]
+			self.hasRead = True
+		else:
+			raise IOError("Config file has already been read.")
 
 	def readFile(self):
 		with open(self.filename,'r') as config:
@@ -118,7 +134,21 @@ class Config():
 		return ltype(contents)
 
 	def getOption(self,varName):
+		if not self.isReady():
+			raise ReferenceError("getOption called before config file has been read!")
 		return self.options[varName]
 
 	def getAllOptions(self):
+		if not self.isReady():
+			raise ReferenceError("getAllOptions called before config file has been read!")
 		return self.options
+
+	def setFilename(self,fname):
+		if not self.hasRead:
+			self.filename = fname
+			self.read()
+		else:
+			raise IOError("Config file has already been read.")
+
+	def isReady(self):
+		return self.hasRead
