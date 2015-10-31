@@ -10,16 +10,18 @@ def _repeatUpdatePeriodic(self):
 class ScreenManager(object):
 	_instance = None
 	def __init__(self):
-		self.Init()
+		# self.Init()
+		self.settings = Config.Config()
 
-	def Init(self):
+	def Init(self,filename):
 		pygame.display.init()
-		settings = Config.Config("./bin/Py2D/Settings/Window.cfg")
+		# settings = Config.Config("./bin/Py2D/Settings/Window.cfg")
+		self.settings.setFilename(filename)
 
-		self.screensize = 			settings.getOption("ScreenSize")
-		self.cameraPosition = 		settings.getOption("CameraPosition")
-		self.fullSurfaceSize = 		settings.getOption("FullSurfaceSize")
-		self.fps = 					settings.getOption("MaximumFrameRate")
+		self.screensize = 			self.settings.getOption("ScreenSize")
+		self.cameraPosition = 		self.settings.getOption("CameraPosition")
+		self.fullSurfaceSize = 		self.settings.getOption("FullSurfaceSize")
+		self.fps = 					self.settings.getOption("MaximumFrameRate")
 
 		self.screen = 		pygame.display.set_mode(self.screensize)
 		self.cameraview = 	pygame.Surface(self.screensize)
@@ -34,12 +36,18 @@ class ScreenManager(object):
 		self.tupdatePeriodic.daemon = True
 		# self.tupdatePeriodic.start()
 
+	def canStart(self):
+		return self.settings.isReady()
+
 	def End(self):
 		self.tupdatePeriodic.kill()
 		pygame.display.quit()
 
 	def startUpdatePeriodic(self):
-		self.tupdatePeriodic.start()
+		if self.canStart():
+			self.tupdatePeriodic.start()
+		else:
+			raise RuntimeError("Unable to start: No settings file has been established.")
 
 	def addToQueue(self,item):
 		'''item can be either a list or an object, so long as the object has a one parameter render method.
