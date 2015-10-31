@@ -1,7 +1,7 @@
 import pygame
 
 # from Managers import *
-from bin.Py2D.Managers import ScreenManager,InputManager,SoundManager
+from Managers import ScreenManager,InputManager,SoundManager
 
 # print dir(ScreenManager)
 
