@@ -6,13 +6,17 @@ from Managers import ScreenManager,InputManager,SoundManager
 # print dir(ScreenManager)
 
 class IterativeLoop(object):
-	def __init__(self,name="Default Name"):
+	def __init__(self,name="Default Name",cfg=""):
 		self.name = name
 		self.screenManager = ScreenManager.ScreenManager.getInstance()
 		self.soundManager = SoundManager.SoundManager.getInstance()
 		# self.smanager = ScreenManager.getInstance()
 		# self.smanager.setCameraPosition(500-320,500-240)
 		# self.smanager = ScreenManager.ScreenManager(1000,1000,640,480,campos=[500-320,500-240])
+
+		# Initialize if cfg is not blank
+		if cfg != "":
+			self.screenManager.Init(cfg)
 
 		pygame.display.set_caption(name)
 
