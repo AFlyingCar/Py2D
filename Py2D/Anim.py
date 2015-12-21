@@ -23,9 +23,16 @@ class Anim(object):
 
 	def render(self,surf):
 		if self.isPlaying():
-			s = t.scale(self.frames[self.currentIndex],self.size)
-			s = t.rotate(s,self.angle)
-			surf.blit(s,self.pos)
+			frame = self.frames[self.currentIndex]
+			if type(frame) == pygame.Surface:
+				s = t.scale(self.frames[self.currentIndex],self.size)
+				s = t.rotate(s,self.angle)
+				surf.blit(s,self.pos)
+			else:
+				frame.scale(self.size)
+				frame.rotate(self.angle)
+				frame.setPos(self.pos)
+				frame.render(surf)
 			self.increment()
 
 	def renderUntilFinished(self,surf):
