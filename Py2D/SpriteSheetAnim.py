@@ -1,6 +1,7 @@
 import pygame
 
 import Anim
+import Image
 
 class SpriteSheetAnim(Anim.Anim):
 	def __init__(self,filename,pos,spriteSize,spriteStartPos=(0,0)):
@@ -16,18 +17,19 @@ class SpriteSheetAnim(Anim.Anim):
 		return self.filename
 
 	def loadSpriteSheet(self,filename):
-		image = pygame.image.load(filename)
+		# image = pygame.image.load(filename)
+		image = Image.Image(filename)
 		
 		len_sprt_x,len_sprt_y = self.spriteSize
 		sprt_rect_x,sprt_rect_y = self.spriteStartPos
 
-		sheet_rect = image.get_rect()
+		sheet_rect = image.getSurf().get_rect()
 		sheet = []
 
 		for row in range(0,sheet_rect.height-len_sprt_y,self.spriteSize[1]):
 			for col in range(0,sheet_rect.width-len_sprt_x,self.spriteSize[0]):
-				image.set_clip(pygame.Rect(sprt_rect_x,sprt_rect_y,len_sprt_x,len_sprt_y))
-				sprite = image.subsurface(image.get_clip())
+				image.getSurf().set_clip(pygame.Rect(sprt_rect_x,sprt_rect_y,len_sprt_x,len_sprt_y))
+				sprite = image.getSurf().subsurface(image.getSurf().get_clip())
 				sheet.append(sprite)
 				sprt_rect_x += len_sprt_x
 
