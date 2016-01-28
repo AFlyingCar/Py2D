@@ -62,7 +62,7 @@ if __name__ == "__main__":
     # Get Py2D installation location
     py2d_inst_dir_path = os.path.join(os.path.expanduser("~"),".py2d_inst_dir")
     if os.path.exists(py2d_inst_dir_path):
-        py2dpath=open(py2d_inst_dir_path,'r').read()
+        py2dpath=open(py2d_inst_dir_path,'r').read().strip()
     else:
         print "Py2DPackager error: Unable to find Py2D installation location."
         print "\t~/.py2d_inst_dir_path is missing."
