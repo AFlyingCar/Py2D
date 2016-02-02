@@ -16,7 +16,10 @@ class ScreenManager(object):
 	def Init(self,filename):
 		pygame.display.init()
 		# settings = Config.Config("./bin/Py2D/Settings/Window.cfg")
-		self.settings.setFilename(filename)
+                if(type(filename) == Config.Config):
+                    self.settings = filename
+                else:
+                    self.settings.setFilename(filename)
 
 		self.screensize = 			self.settings.getOption("ScreenSize")
 		self.cameraPosition = 		self.settings.getOption("CameraPosition")
