@@ -18,8 +18,10 @@ class ScreenManager(object):
 		# settings = Config.Config("./bin/Py2D/Settings/Window.cfg")
                 if(type(filename) == Config.Config):
                     self.settings = filename
-                else:
+                elif(type(filename) == str):
                     self.settings.setFilename(filename)
+                else:
+                    print "Invalid type. `filename` must be either `str` or `Config`"
 
 		self.screensize = 			self.settings.getOption("ScreenSize")
 		self.cameraPosition = 		self.settings.getOption("CameraPosition")
