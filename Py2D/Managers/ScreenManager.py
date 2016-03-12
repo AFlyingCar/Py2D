@@ -1,7 +1,7 @@
 import pygame,threading
 
-from .. import KillableThread
-from .. import Config
+import KillableThread
+import Config
 
 def _repeatUpdatePeriodic(self):
 	while True:

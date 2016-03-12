@@ -1,6 +1,6 @@
 import pygame.mixer, StringIO, zipfile
 
-from .. import Sound
+import Sound
 
 class SoundManager(object):
 	_instance = None
