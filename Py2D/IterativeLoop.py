@@ -1,9 +1,6 @@
 import pygame
 
-# from Managers import *
 from Managers import ScreenManager,InputManager,SoundManager
-
-# print dir(ScreenManager)
 
 class IterativeLoop(object):
 	def __init__(self,name="Default Name",cfg=""):
