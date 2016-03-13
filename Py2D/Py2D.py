@@ -5,6 +5,7 @@ def START_WITH_ERROR_HANDLING(mclass):
 		main_obj.getScreen().startUpdatePeriodic()
 		while True:
 			main_obj.Execute()
+                        main_obj.getEVENT_BUS().Update()
 			if main_obj.IsFinished():
 				main_obj.getScreen().End()
 				main_obj.End()
@@ -23,6 +24,7 @@ def START_WITHOUT_ERROR_HANDLING(mclass):
 	main_obj.getScreen().startUpdatePeriodic()
 	while True:
 		main_obj.Execute()
+                main_obj.getEVENT_BUS().Update()
 		if main_obj.IsFinished():
 			main_obj.getScreen().End()
 			main_obj.End()
@@ -44,6 +46,9 @@ import Managers
 import Errors
 import Inputs
 
+import Events
+import EventBus
+import EventSubscribe
 import IterativeLoop
 import Sound
 import Config
