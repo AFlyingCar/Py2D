@@ -11,3 +11,5 @@ class EventBus(object):
         event = pygame.event.Event(eid,**kwargs)
         pygame.event.post(event)
 
+EVENT_BUS = EventBus()
+
