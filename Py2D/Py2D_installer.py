@@ -1,3 +1,4 @@
+#!/usr/bin/env python2.7
 import urllib2, sys, os, imp, marshal
 
 WINDOWS_INSTALL_PATH = "C:\\Program Files\\Py2D\\"
@@ -112,3 +113,4 @@ def main():
 
 if __name__ == "__main__":
 	main()
+
