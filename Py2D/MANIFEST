@@ -9,6 +9,9 @@ Py2D/__init__.py
 Py2D/IterativeLoop.py
 Py2D/SpriteSheetAnim.py
 Py2D/KillableThread.py
+Py2D/Events.py
+Py2D/EventBus.py
+Py2D/EventSubscribe.py
 
 Py2D/Inputs/Keyboard.py
 Py2D/Inputs/KeyboardButton.py
@@ -16,6 +19,7 @@ Py2D/Inputs/Mouse.py
 Py2D/Inputs/MouseButton.py
 Py2D/Inputs/__init__.py
 
+Py2D/Managers/EventScreenManager.py
 Py2D/Managers/ScreenManager.py
 Py2D/Managers/SoundManager.py
 Py2D/Managers/InputManager.py
