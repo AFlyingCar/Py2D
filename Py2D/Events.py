@@ -31,6 +31,28 @@ PRE_SCREEN_UPDATE_EVENT = USEREVENT+8
 RENDER_QUEUE_EVENT = USEREVENT+9
 # No members
 POST_SCREEN_UPDATE_EVENT = USEREVENT+10
+# No members
+INITIALIZE_SCREEN_MANAGER_EVENT = USEREVENT+11
+
+##################
+# Capping Events #
+##################
+
+# No members
+INITIALIZATION_EVENT = USEREVENT+12
+# No members
+PRE_SHUTDOWN_EVENT = USEREVENT+13
+# No members
+SHUTDOWN_EVENT = USEREVENT+14
+# No members
+POST_SHUTDOWN_EVENT = USEREVENT+15
+
+################
+# Other Events #
+################
+
+# No members
+FINISHED_EVENT = USEREVENT+16
 
 # A special base event. Should never be thrown. 255 possible events are allowed after USEREVENT
 CUSTOM_EVENT = USEREVENT+255
