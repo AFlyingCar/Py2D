@@ -55,3 +55,27 @@ import Config
 import Text
 import Timer
 
+def START_PROGRAM():
+    tick = 0
+    done = False
+
+    @EventSubscribe(FINISHED_EVENT)
+    def onFinished(event):
+        EVENT_BUS.post(PRE_SHUTDOWN_EVENT)
+
+    # define these functions inside the START_PROGRAM function so they have access to done
+    #  and because I don't want others to access them
+    @EventSubscribe(PRE_SHUDOWN_EVENT)
+    def onPreShutdown(event):
+        done = True
+        EVENT_BUS.post(SHUTDOWN_EVENT)
+
+    EVENT_BUS.post(INITIALIZATION_EVENT)
+    EVENT_BUS.Update()
+    while not done:
+        tick+=1
+        EVENT_BUS.post(TICK_EVENT,ticks=tick)
+        EVENT_BUS.Update()
+    EVENT_BUS.post(POST_SHUTDOWN_EVENT)
+    EVENT_BUS.Update()
+
