@@ -1,6 +1,6 @@
 import pygame
-from EventSubscribe import *
-from Events import *
+from Py2D.EventSubscribe import *
+from Py2D.Events import *
 
 '''
 
@@ -73,6 +73,10 @@ class EventScreenManager(object):
 
     def setFPS(self,fps):
         self.fps = fps
+
+    @EventSubscribe(INITIALIZE_SCREEN_MANAGER_EVENT)
+    def onStartScreenManager(self,event):
+        self.Init()
 
     @EventSubscribe(SCREEN_MANAGER_ADD_TO_QUEUE_EVENT)
     def onQueueAdd(self,event):
