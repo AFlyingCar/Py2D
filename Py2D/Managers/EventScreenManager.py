@@ -34,7 +34,7 @@ class EventScreenManager(object):
         self.clock = pygame.clock.Clock()
         self.started = True
 
-    def isStarted():
+    def isStarted(self):
         return self.started
 
     def getQueue(self):
@@ -82,8 +82,10 @@ class EventScreenManager(object):
     def onQueueAdd(self,event):
         self.queue.append(event.renderable)
 
+    @staticmethod
     @EventSubscribe(TICK_EVENT)
-    def onTick(self,event):
+    def onTick(event):
+        self = EventScreenManager.getInstance()
         if(self.isStarted()):
             EVENT_BUS.post(PRE_SCREEN_UPDATE_EVENT)
             EVENT_BUS.post(RENDER_QUEUE_EVENT)
