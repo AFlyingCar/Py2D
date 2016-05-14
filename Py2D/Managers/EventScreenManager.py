@@ -1,6 +1,7 @@
 import pygame
 from Py2D.EventSubscribe import *
-from Py2D.Events import *
+from Py2D.Events.Events import *
+from Py2D.Managers.Events import *
 
 '''
 
@@ -74,17 +75,20 @@ class EventScreenManager(object):
     def setFPS(self,fps):
         self.fps = fps
 
+    @staticmethod
     @EventSubscribe(INITIALIZE_SCREEN_MANAGER_EVENT)
-    def onStartScreenManager(self,event):
+    def onStartScreenManager(event):
         self.Init()
 
+    @staticmethod
     @EventSubscribe(SCREEN_MANAGER_ADD_TO_QUEUE_EVENT)
-    def onQueueAdd(self,event):
+    def onQueueAdd(event):
         self.queue.append(event.renderable)
 
     @staticmethod
     @EventSubscribe(TICK_EVENT)
     def onTick(event):
+        # NOTE: We have to do this, because otherwise we have trouble with EventBus not calling the method properly (missing self)
         self = EventScreenManager.getInstance()
         if(self.isStarted()):
             EVENT_BUS.post(PRE_SCREEN_UPDATE_EVENT)
@@ -92,8 +96,9 @@ class EventScreenManager(object):
             EVENT_BUS.post(SCREEN_UPDATE_EVENT)
             EVENT_BUS.post(POST_SCREEN_UPDATE_EVENT)
 
+    @staticmethod
     @EventSubscribe(RENDER_QUEUE_EVENT)
-    def onRenderQueue(self,event):
+    def onRenderQueue(event):
         try:
             for s in self.queue:
                 # Render each item on the foreground
@@ -102,18 +107,21 @@ class EventScreenManager(object):
         except Exception as e:
             return False
 
+    @staticmethod
     @EventSubscribe(PRE_SCREEN_UPDATE_EVENT)
-    def onPreScreenUpdate(self,event):
+    def onPreScreenUpdate(event):
         self.resetForeground()
 
+    @staticmethod
     @EventSubscribe(SCREEN_UPDATE_EVENT)
-    def onScreenUpdate(self,event):
+    def onScreenUpdate(event):
         # Render background, then foreground on the surface
         self.blitSurfaceOnScreen(self.background,0,0)
         self.blitSurfaceOnScreen(self.foreground,0,0)
 
+    @staticmethod
     @EventSubscribe(POST_SCREEN_UPDATE_EVENT)
-    def onPostScreenUpdate(self,event):
+    def onPostScreenUpdate(event):
         self.clock.tick(self.fps)
         pygame.display.update()
 
