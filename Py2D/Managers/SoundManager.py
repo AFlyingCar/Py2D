@@ -56,7 +56,7 @@ class SoundManager(object):
 
         archive = zipfile.ZipFile(archiveName,'r')
         for f in archive.namelist():
-                self.loadFile(f,archive)
+            self.loadFile(f,archive)
 
         return True
 
