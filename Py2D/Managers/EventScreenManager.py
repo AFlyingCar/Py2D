@@ -1,8 +1,10 @@
 import pygame
 from Py2D.EventSubscribe import *
-from Py2D.Events.Events import *
-from Py2D.Managers.Events import *
-
+from Py2D.Events.TickEvent import *
+from Py2D.Managers.Events.InitializeScreenManagerEvent import *
+from Py2D.Managers.Events.ScreenManagerAddToQueueEvent import *
+from Py2D.Managers.Events.ScreenManagerRenderQueueEvent import *
+from Py2D.Managers.Events.ScreenUpdateEvents import *
 '''
 
 Image     Image
@@ -76,17 +78,19 @@ class EventScreenManager(object):
         self.fps = fps
 
     @staticmethod
-    @EventSubscribe(INITIALIZE_SCREEN_MANAGER_EVENT)
+    @EventSubscribe(InitializeScreenManagerEvent)
     def onStartScreenManager(event):
+        self = EventScreenManager.getInstance()
         self.Init()
 
     @staticmethod
-    @EventSubscribe(SCREEN_MANAGER_ADD_TO_QUEUE_EVENT)
+    @EventSubscribe(ScreenManagerAddToQueueEvent)
     def onQueueAdd(event):
+        self = EventScreenManager.getInstance()
         self.queue.append(event.renderable)
 
     @staticmethod
-    @EventSubscribe(TICK_EVENT)
+    @EventSubscribe(TickEvent)
     def onTick(event):
         # NOTE: We have to do this, because otherwise we have trouble with EventBus not calling the method properly (missing self)
         self = EventScreenManager.getInstance()
@@ -97,8 +101,9 @@ class EventScreenManager(object):
             EVENT_BUS.post(POST_SCREEN_UPDATE_EVENT)
 
     @staticmethod
-    @EventSubscribe(RENDER_QUEUE_EVENT)
+    @EventSubscribe(ScreenManagerRenderQueueEvent)
     def onRenderQueue(event):
+        self = EventScreenManager.getInstance()
         try:
             for s in self.queue:
                 # Render each item on the foreground
@@ -108,20 +113,23 @@ class EventScreenManager(object):
             return False
 
     @staticmethod
-    @EventSubscribe(PRE_SCREEN_UPDATE_EVENT)
+    @EventSubscribe(PreScreenUpdateEvent)
     def onPreScreenUpdate(event):
+        self = EventScreenManager.getInstance()
         self.resetForeground()
 
     @staticmethod
-    @EventSubscribe(SCREEN_UPDATE_EVENT)
+    @EventSubscribe(ScreenUpdateEvent)
     def onScreenUpdate(event):
+        self = EventScreenManager.getInstance()
         # Render background, then foreground on the surface
         self.blitSurfaceOnScreen(self.background,0,0)
         self.blitSurfaceOnScreen(self.foreground,0,0)
 
     @staticmethod
-    @EventSubscribe(POST_SCREEN_UPDATE_EVENT)
+    @EventSubscribe(PostScreenUpdateEvent)
     def onPostScreenUpdate(event):
+        self = EventScreenManager.getInstance()
         self.clock.tick(self.fps)
         pygame.display.update()
 
