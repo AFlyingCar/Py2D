@@ -39,16 +39,21 @@ def main(mclass, debug_level=1):
         START_WITHOUT_ERROR_HANDLING(mclass)
 
 import pygame,sys
-from pygame.locals import *
+#from pygame.locals import *
 
 import Sprites
 import Managers
 import Errors
 import Inputs
 
-import Events
-import EventBus
-import EventSubscribe
+from Events.Events import *
+from Events.TickEvent import *
+from Events.FinishedEvent import *
+from Events.ShutdownEvents import *
+from Events.InitializationEvent import *
+from EventBus import *
+from EventSubscribe import *
+
 import IterativeLoop
 import Sound
 import Config
@@ -57,25 +62,41 @@ import Timer
 
 def START_PROGRAM():
     tick = 0
-    done = False
 
-    @EventSubscribe(FINISHED_EVENT)
-    def onFinished(event):
-        EVENT_BUS.post(PRE_SHUTDOWN_EVENT)
+    # This is done with the __DONE class so that the done variable can be globally mutated by any of the three following functions
+    class __DONE:
+        done = False
 
     # define these functions inside the START_PROGRAM function so they have access to done
     #  and because I don't want others to access them
-    @EventSubscribe(PRE_SHUDOWN_EVENT)
-    def onPreShutdown(event):
-        done = True
-        EVENT_BUS.post(SHUTDOWN_EVENT)
+    @EventSubscribe(FinishedEvent)
+    def onFinishedMAIN(event):
+        print "onFinished(...)"
+        EVENT_BUS.post(PreShutdownEvent())
 
-    EVENT_BUS.post(INITIALIZATION_EVENT)
+    @EventSubscribe(PreShutdownEvent)
+    def onPreShutdownMAIN(event):
+        print "onPreShutdown(...)"
+        EVENT_BUS.post(ShutdownEvent())
+
+    @EventSubscribe(ShutdownEvent)
+    def onShutdownMAIN(event):
+        __DONE.done = True
+        EVENT_BUS.post(PostShutdownEvent())
+        print "onShutdown(...)"
+
+    # Init pygame here because the Event system doesn't work otherwise
+    pygame.init()
+
+    EVENT_BUS.post(InitializationEvent())
     EVENT_BUS.Update()
-    while not done:
+    while not __DONE.done:
         tick+=1
-        EVENT_BUS.post(TICK_EVENT,ticks=tick)
+        EVENT_BUS.post(TickEvent(tick))
+        #EVENT_BUS.post(TICK_EVENT,tick=tick)
         EVENT_BUS.Update()
-    EVENT_BUS.post(POST_SHUTDOWN_EVENT)
     EVENT_BUS.Update()
+
+    # Do this outside of everything else, because turning it off disables pygame.event.get(), thus causing a crash
+    pygame.quit()
 
