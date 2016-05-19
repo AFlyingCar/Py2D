@@ -71,19 +71,20 @@ def START_PROGRAM():
     #  and because I don't want others to access them
     @EventSubscribe(FinishedEvent)
     def onFinishedMAIN(event):
-        print "onFinished(...)"
+        __DONE.done = True
         EVENT_BUS.post(PreShutdownEvent())
 
     @EventSubscribe(PreShutdownEvent)
     def onPreShutdownMAIN(event):
-        print "onPreShutdown(...)"
         EVENT_BUS.post(ShutdownEvent())
 
     @EventSubscribe(ShutdownEvent)
     def onShutdownMAIN(event):
-        __DONE.done = True
         EVENT_BUS.post(PostShutdownEvent())
-        print "onShutdown(...)"
+
+    @EventSubscribe(PostShutdownEvent)
+    def onPostShutdownMAIN(event):
+        pygame.quit()
 
     # Init pygame here because the Event system doesn't work otherwise
     pygame.init()
@@ -93,10 +94,8 @@ def START_PROGRAM():
     while not __DONE.done:
         tick+=1
         EVENT_BUS.post(TickEvent(tick))
-        #EVENT_BUS.post(TICK_EVENT,tick=tick)
         EVENT_BUS.Update()
+    # Call it 2 more times so that Both Shutdown and post shutdown get called
     EVENT_BUS.Update()
-
-    # Do this outside of everything else, because turning it off disables pygame.event.get(), thus causing a crash
-    pygame.quit()
+    EVENT_BUS.Update()
 
