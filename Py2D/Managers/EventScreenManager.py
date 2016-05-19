@@ -1,5 +1,6 @@
 import pygame
 from Py2D.EventSubscribe import *
+from Py2D.EventBus import *
 from Py2D.Events.TickEvent import *
 from Py2D.Managers.Events.InitializeScreenManagerEvent import *
 from Py2D.Managers.Events.ScreenManagerAddToQueueEvent import *
@@ -34,7 +35,7 @@ class EventScreenManager(object):
         self.screen = pygame.display.set_mode(self.screenSize)
         self.background = pygame.Surface(self.screenSize)
         self.foreground = pygame.Surface(self.screenSize)
-        self.clock = pygame.clock.Clock()
+        self.clock = pygame.time.Clock()
         self.started = True
 
     def isStarted(self):
@@ -47,11 +48,11 @@ class EventScreenManager(object):
         pygame.display.quit()
 
     def addToQueue(self,renderabl):
-        EVENT_BUS.post(SCREEN_MANAGER_ADD_TO_QUEUE_EVENT,renderable=renderabl)
+        EVENT_BUS.post(ScreenManagerAddToQueueEvent,renderable=renderabl)
 
     def removeFromQueue(self,index):
         r = self.queue.pop(index)
-        EVENT_BUS.post(SCREEN_MANAGER_RENDERABLE_REMOVED_FROM_QUEUE_EVENT,renderable=r,oldIndex=index)
+        EVENT_BUS.post(ScreenManagerRemoveFromQueueEvent(r,index))
 
     def blitSurfaceOnScreen(self,surf,x,y):
         self.screen.blit(surf,(x,y))
@@ -80,6 +81,7 @@ class EventScreenManager(object):
     @staticmethod
     @EventSubscribe(InitializeScreenManagerEvent)
     def onStartScreenManager(event):
+        print "onStartScreenManager(...)"
         self = EventScreenManager.getInstance()
         self.Init()
 
@@ -95,10 +97,10 @@ class EventScreenManager(object):
         # NOTE: We have to do this, because otherwise we have trouble with EventBus not calling the method properly (missing self)
         self = EventScreenManager.getInstance()
         if(self.isStarted()):
-            EVENT_BUS.post(PRE_SCREEN_UPDATE_EVENT)
-            EVENT_BUS.post(RENDER_QUEUE_EVENT)
-            EVENT_BUS.post(SCREEN_UPDATE_EVENT)
-            EVENT_BUS.post(POST_SCREEN_UPDATE_EVENT)
+            EVENT_BUS.post(PreScreenUpdateEvent())
+            EVENT_BUS.post(ScreenManagerRenderQueueEvent())
+            EVENT_BUS.post(ScreenUpdateEvent())
+            EVENT_BUS.post(PostScreenUpdateEvent())
 
     @staticmethod
     @EventSubscribe(ScreenManagerRenderQueueEvent)
@@ -140,4 +142,7 @@ class EventScreenManager(object):
             cls._instance = EventScreenManager()
 
         return cls._instance
+
+# Do this to make sure EventScreenManager exists at least once
+EventScreenManager.getInstance()
 
