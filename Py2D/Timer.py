@@ -2,7 +2,7 @@ import pygame,threading
 from pygame.locals import *
 
 class Timer(object):
-    def __init__(self,maxTime):
+    def __init__(self,maxTime=-1):
         self.timed=0.0
         self.maxTime=maxTime
         self.timing=False
@@ -19,7 +19,7 @@ class Timer(object):
                 if self.ctime-self.lastTime>=1:
                     self.timed+=1
                     self.lastTime=self.ctime
-            if self.timed >= self.maxTime:
+            if self.maxTime != -1 and self.timed >= self.maxTime:
                 self.finished=True
 
     def startTimer(self,reset=True):
