@@ -52,7 +52,7 @@ class EventBus(object):
             for method in EventSubscribe.subscribes[eid]:
                 method.func(event)
 
-            if(type(event) == EventBase):
+            if(isinstance(event,EventBase)):
                 event.lifecycle+=1
                 if(event.lifecycle > event.MAX_LIFECYCLE):
                     event.canceled = True
