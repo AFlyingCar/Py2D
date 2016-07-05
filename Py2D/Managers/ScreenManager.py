@@ -3,6 +3,9 @@ import pygame,threading
 import Py2D.KillableThread
 import Py2D.Config
 
+import warnings
+warnings.warn("Deprecated",DeprecationWarning)
+
 def _repeatUpdatePeriodic(self):
     while True:
         self.updatePeriodic()
